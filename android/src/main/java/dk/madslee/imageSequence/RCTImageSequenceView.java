@@ -51,6 +51,16 @@ public class RCTImageSequenceView extends ImageView {
 
 
         private Bitmap loadBitmapByLocalResource(String uri) {
+            String filePrefix = "file://";
+            if (uri.startsWith(filePrefix)) {
+                String filepath = uri.substring(uri.indexOf(filePrefix) + filePrefix.length());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inScaled = false;
+                options.inDither = false;
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                return BitmapFactory.decodeFile(filepath, options);
+            }
+
             return BitmapFactory.decodeResource(this.context.getResources(), resourceDrawableIdHelper.getResourceDrawableId(this.context, uri));
         }
 
