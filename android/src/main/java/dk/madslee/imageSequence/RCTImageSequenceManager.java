@@ -45,4 +45,15 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
 
         view.setImages(uris);
     }
+
+    /**
+     * sets the size for scaling bitmaps
+     *
+     * @param size size object {width: xxx, height: xxx }
+     */
+    @ReactProp(name = "size")
+    public void setSize(final RCTImageSequenceView view, final ReadableMap size) {
+        if (size != null)
+            view.setSize(size.getInt("width"), size.getInt("height"));
+    }
 }
