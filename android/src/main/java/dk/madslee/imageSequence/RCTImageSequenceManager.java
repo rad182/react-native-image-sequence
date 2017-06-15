@@ -8,6 +8,8 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 
 public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceView> {
     @Override
@@ -52,7 +54,7 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
      * @param size size object {width: xxx, height: xxx }
      */
     @ReactProp(name = "size")
-    public void setSize(final RCTImageSequenceView view, final ReadableMap size) {
+    public void setSize(final RCTImageSequenceView view, @Nullable ReadableMap size) {
         if (size != null)
             view.setSize(size.getInt("width"), size.getInt("height"));
     }
