@@ -163,7 +163,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     private void setupAnimationDrawable() {
-        final AnimationDrawable animation = new CustomAnimationDrawable(this.getContext(), this.drawableWidth, this.drawableHeight) {
+        final AnimationDrawable animation = new CustomAnimationDrawable() {
             @Override
             void onAnimationFinish() {
                 //Do something when finish animation
