@@ -22,8 +22,8 @@ public class RCTImageSequenceView extends ImageView {
     private ArrayList<AsyncTask> activeTasks;
     private HashMap<Integer, Bitmap> bitmaps;
     private RCTResourceDrawableIdHelper resourceDrawableIdHelper;
-    private Integer drawableWidth = -1;
-    private Integer drawableHeight = -1;
+    private Integer drawableWidth = 0;
+    private Integer drawableHeight = 0;
 
     public RCTImageSequenceView(Context context) {
         super(context);
@@ -35,11 +35,15 @@ public class RCTImageSequenceView extends ImageView {
         private final Integer index;
         private final String uri;
         private final Context context;
+        private final Integer desiredWidth;
+        private final Integer desiredHeight;
 
-        public DownloadImageTask(Integer index, String uri, Context context) {
+        public DownloadImageTask(Integer index, String uri, Context context, Integer width, Integer height) {
             this.index = index;
             this.uri = uri;
             this.context = context;
+            this.desiredWidth = width;
+            this.desiredHeight = height;
         }
 
         @Override
@@ -54,16 +58,23 @@ public class RCTImageSequenceView extends ImageView {
 
         private Bitmap loadBitmapByLocalResource(String uri) {
             String filePrefix = "file://";
+            Bitmap bitmap = null;
             if (uri.startsWith(filePrefix)) {
                 String filepath = uri.substring(uri.indexOf(filePrefix) + filePrefix.length());
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inScaled = false;
                 options.inDither = false;
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                return BitmapFactory.decodeFile(filepath, options);
+                bitmap = BitmapFactory.decodeFile(filepath, options);
+            } else {
+                bitmap = BitmapFactory.decodeResource(this.context.getResources(), resourceDrawableIdHelper.getResourceDrawableId(this.context, uri));
             }
 
-            return BitmapFactory.decodeResource(this.context.getResources(), resourceDrawableIdHelper.getResourceDrawableId(this.context, uri));
+            if (this.desiredWidth != 0 && this.desiredHeight != 0) {
+                return Bitmap.createScaledBitmap(bitmap, this.desiredWidth, this.desiredHeight, true);
+            }
+
+            return bitmap;
         }
 
         private Bitmap loadBitmapByExternalURL(String uri) {
@@ -74,6 +85,10 @@ public class RCTImageSequenceView extends ImageView {
                 bitmap = BitmapFactory.decodeStream(in);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            if (this.desiredWidth != 0 && this.desiredHeight != 0) {
+                return Bitmap.createScaledBitmap(bitmap, this.desiredWidth, this.desiredHeight, true);
             }
 
             return bitmap;
@@ -113,7 +128,7 @@ public class RCTImageSequenceView extends ImageView {
         bitmaps = new HashMap<>(uris.size());
 
         for (int index = 0; index < uris.size(); index++) {
-            DownloadImageTask task = new DownloadImageTask(index, uris.get(index), getContext());
+            DownloadImageTask task = new DownloadImageTask(index, uris.get(index), getContext(), this.drawableWidth, this.drawableHeight);
             activeTasks.add(task);
 
             try {
