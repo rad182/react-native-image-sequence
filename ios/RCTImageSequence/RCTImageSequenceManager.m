@@ -6,15 +6,26 @@
 #import "RCTImageSequenceManager.h"
 #import "RCTImageSequenceView.h"
 
-@implementation RCTImageSequenceManager {
-}
+@interface RCTImageSequenceManager ()
+
+@property (strong, nonatomic) RCTImageSequenceView *imageSequenceView;
+
+@end
+
+@implementation RCTImageSequenceManager
 
 RCT_EXPORT_MODULE();
 RCT_EXPORT_VIEW_PROPERTY(images, NSArray);
 RCT_EXPORT_VIEW_PROPERTY(framesPerSecond, NSUInteger);
+RCT_EXPORT_METHOD(reset) {
+    [self.imageSequenceView reset];
+}
 
 - (UIView *)view {
-    return [RCTImageSequenceView new];
+    if (self.imageSequenceView == nil) {
+        self.imageSequenceView = [RCTImageSequenceView new];
+    }
+    return self.imageSequenceView;
 }
 
 @end

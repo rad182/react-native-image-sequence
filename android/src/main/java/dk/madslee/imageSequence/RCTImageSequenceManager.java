@@ -1,5 +1,6 @@
 package dk.madslee.imageSequence;
 
+import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.SimpleViewManager;
@@ -12,6 +13,9 @@ import javax.annotation.Nullable;
 
 
 public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceView> {
+
+    private RCTImageSequenceView imageSequenceView = null;
+
     @Override
     public String getName() {
         return "RCTImageSequence";
@@ -19,7 +23,15 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
 
     @Override
     protected RCTImageSequenceView createViewInstance(ThemedReactContext reactContext) {
-        return new RCTImageSequenceView(reactContext);
+        if (imageSequenceView == null) {
+            imageSequenceView = new RCTImageSequenceView(reactContext);
+        }
+        return imageSequenceView;
+    }
+
+    @ReactMethod
+    public void reset() {
+        imageSequenceView.reset();
     }
 
     /**

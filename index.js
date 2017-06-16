@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { View, requireNativeComponent, ViewPropTypes } from 'react-native';
+import { View, requireNativeComponent, ViewPropTypes, NativeModules } from 'react-native';
 import resolveAssetSource
   from 'react-native/Libraries/Image/resolveAssetSource';
 
 class ImageSequence extends Component {
+
+  reset() {
+    const ImageSequenceManager = NativeModules.ImageSequenceManager;
+    ImageSequenceManager.reset();
+  }
+
   render() {
     let normalized = this.props.images.map(resolveAssetSource);
 

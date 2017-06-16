@@ -24,6 +24,7 @@ public class RCTImageSequenceView extends ImageView {
     private RCTResourceDrawableIdHelper resourceDrawableIdHelper;
     private Integer drawableWidth = 0;
     private Integer drawableHeight = 0;
+    private AnimationDrawable animation = null;
 
     public RCTImageSequenceView(Context context) {
         super(context);
@@ -116,6 +117,13 @@ public class RCTImageSequenceView extends ImageView {
         }
     }
 
+    public void reset() {
+        if (animation != null) {
+            animation.stop();
+            animation.start();
+        }
+    }
+
     public void setImages(ArrayList<String> uris) {
         if (isLoading()) {
             // cancel ongoing tasks (if still loading previous images)
@@ -163,7 +171,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     private void setupAnimationDrawable() {
-        final AnimationDrawable animation = new CustomAnimationDrawable() {
+        animation = new CustomAnimationDrawable() {
             @Override
             void onAnimationFinish() {
                 //Do something when finish animation

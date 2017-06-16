@@ -39,6 +39,13 @@
     }
 }
 
+- (void)reset {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self stopAnimating];
+        [self startAnimating];
+    });
+}
+
 - (void)onImageLoadTaskAtIndex:(NSUInteger)index image:(UIImage *)image {
     if (index == 0) {
         self.image = image;

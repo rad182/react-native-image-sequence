@@ -7,5 +7,6 @@
 
 @interface RCTImageSequenceView : UIImageView
 
+- (void)reset;
 
 @end
