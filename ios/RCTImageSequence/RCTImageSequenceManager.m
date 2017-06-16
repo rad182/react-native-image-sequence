@@ -14,7 +14,7 @@
 
 @implementation RCTImageSequenceManager
 
-RCT_EXPORT_MODULE();
+RCT_EXPORT_MODULE(RCTImageSequence);
 RCT_EXPORT_VIEW_PROPERTY(images, NSArray);
 RCT_EXPORT_VIEW_PROPERTY(framesPerSecond, NSUInteger);
 RCT_EXPORT_METHOD(reset) {
