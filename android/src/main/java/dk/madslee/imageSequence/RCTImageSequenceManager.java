@@ -1,20 +1,23 @@
 package dk.madslee.imageSequence;
 
+import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 
 public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceView> {
 
-    private RCTImageSequenceView imageSequenceView = null;
+    public static final int COMMAND_RESET = 1;
 
     @Override
     public String getName() {
@@ -23,15 +26,35 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
 
     @Override
     protected RCTImageSequenceView createViewInstance(ThemedReactContext reactContext) {
-        if (imageSequenceView == null) {
-            imageSequenceView = new RCTImageSequenceView(reactContext);
-        }
-        return imageSequenceView;
+        return new RCTImageSequenceView(reactContext);
     }
 
-    @ReactMethod
-    public void reset() {
-        imageSequenceView.reset();
+    @Override
+    public Map<String,Integer> getCommandsMap() {
+        return MapBuilder.of(
+                "reset",
+                COMMAND_RESET);
+    }
+
+    @Override
+    public void receiveCommand(
+            RCTImageSequenceView view,
+            int commandType,
+            @Nullable ReadableArray args) {
+        Assertions.assertNotNull(view);
+        Assertions.assertNotNull(args);
+        switch (commandType) {
+            case COMMAND_RESET: {
+                view.reset();
+                return;
+            }
+
+            default:
+                throw new IllegalArgumentException(String.format(
+                        "Unsupported command %d received by %s.",
+                        commandType,
+                        getClass().getSimpleName()));
+        }
     }
 
     /**

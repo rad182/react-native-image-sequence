@@ -39,6 +39,12 @@ public abstract class CustomAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
+    public boolean selectDrawable(int idx) {
+        current = idx;
+        return super.selectDrawable(current);
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         if (current < this.getNumberOfFrames()) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) this.getFrame(current);

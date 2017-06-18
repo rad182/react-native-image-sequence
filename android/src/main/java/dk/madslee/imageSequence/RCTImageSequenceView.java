@@ -3,10 +3,9 @@ package dk.madslee.imageSequence;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -24,7 +23,6 @@ public class RCTImageSequenceView extends ImageView {
     private RCTResourceDrawableIdHelper resourceDrawableIdHelper;
     private Integer drawableWidth = 0;
     private Integer drawableHeight = 0;
-    private AnimationDrawable animation = null;
 
     public RCTImageSequenceView(Context context) {
         super(context);
@@ -118,8 +116,10 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     public void reset() {
+        final CustomAnimationDrawable animation = (CustomAnimationDrawable)this.getDrawable();
         if (animation != null) {
             animation.stop();
+            animation.selectDrawable(0);
             animation.start();
         }
     }
@@ -171,7 +171,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     private void setupAnimationDrawable() {
-        animation = new CustomAnimationDrawable() {
+        final CustomAnimationDrawable animation = new CustomAnimationDrawable() {
             @Override
             void onAnimationFinish() {
                 //Do something when finish animation
