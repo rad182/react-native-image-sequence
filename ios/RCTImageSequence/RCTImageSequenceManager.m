@@ -5,27 +5,32 @@
 
 #import "RCTImageSequenceManager.h"
 #import "RCTImageSequenceView.h"
-
-@interface RCTImageSequenceManager ()
-
-@property (strong, nonatomic) RCTImageSequenceView *imageSequenceView;
-
-@end
+#import <React/RCTUIManager.h>
 
 @implementation RCTImageSequenceManager
 
-RCT_EXPORT_MODULE(RCTImageSequence);
+- (dispatch_queue_t)methodQueue
+{
+    return self.bridge.uiManager.methodQueue;
+}
+
+RCT_EXPORT_MODULE();
 RCT_EXPORT_VIEW_PROPERTY(images, NSArray);
 RCT_EXPORT_VIEW_PROPERTY(framesPerSecond, NSUInteger);
-RCT_EXPORT_METHOD(reset) {
-    [self.imageSequenceView reset];
+RCT_EXPORT_METHOD(reset: (nonnull NSNumber *)reactTag) {
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        UIView *view = viewRegistry[reactTag];
+        if (![view isKindOfClass:[RCTImageSequenceView class]]) {
+            RCTLog(@"expecting UIView, got: %@", view);
+        } else {
+            RCTImageSequenceView *imageSequenceView = (RCTImageSequenceView *)view;
+            [imageSequenceView reset];
+        }
+    }];
 }
 
 - (UIView *)view {
-    if (self.imageSequenceView == nil) {
-        self.imageSequenceView = [RCTImageSequenceView new];
-    }
-    return self.imageSequenceView;
+    return [RCTImageSequenceView new];
 }
 
 @end
