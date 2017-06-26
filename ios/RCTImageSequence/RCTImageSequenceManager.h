@@ -3,7 +3,7 @@
 // Copyright (c) 2016 Facebook. All rights reserved.
 //
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 
 @interface RCTImageSequenceManager : RCTViewManager
 
