@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
-import {
+import ReactNative, {
   View,
   requireNativeComponent,
   ViewPropTypes,
   NativeModules,
   Platform
 } from 'react-native';
-import resolveAssetSource
-  from 'react-native/Libraries/Image/resolveAssetSource';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 class ImageSequence extends Component {
   reset() {
-    if (Platform.OS === 'ios') {
-      const ImageSequence = NativeModules.ImageSequence;
-      ImageSequence.reset();
-    } else if (Platform.OS === 'android') {
-      const { UIManager } = NativeModules;
-      const { Commands } = NativeModules.UIManager.RCTImageSequence;
-      UIManager.dispatchViewManagerCommand(
-        ReactNative.findNodeHandle(this),
-        Commands.reset,
-        []
-      );
-    }
+    const { UIManager } = NativeModules;
+    const { Commands } = NativeModules.UIManager.RCTImageSequence;
+    UIManager.dispatchViewManagerCommand(
+      ReactNative.findNodeHandle(this),
+      Commands.reset,
+      []
+    );
   }
 
   render() {
