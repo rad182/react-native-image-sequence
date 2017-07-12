@@ -140,7 +140,7 @@ public class RCTImageSequenceView extends ImageView {
             activeTasks.add(task);
 
             try {
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                task.execute();
             } catch (RejectedExecutionException e){
                 Log.e("react-native-image-sequence", "DownloadImageTask failed" + e.getMessage());
                 break;
