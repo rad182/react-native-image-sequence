@@ -5,8 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,6 +129,20 @@ public class RCTImageSequenceView extends ImageView {
         }
     }
 
+    public void play() {
+        final CustomAnimationDrawable animation = (CustomAnimationDrawable)this.getDrawable();
+        if (animation != null) {
+            animation.start();
+        }
+    }
+
+    public void stop() {
+        final CustomAnimationDrawable animation = (CustomAnimationDrawable)this.getDrawable();
+        if (animation != null) {
+            animation.stop();
+        }
+    }
+
     public void setImages(ArrayList<String> uris) {
         if (isLoading()) {
             // cancel ongoing tasks (if still loading previous images)
@@ -175,6 +194,8 @@ public class RCTImageSequenceView extends ImageView {
             @Override
             void onAnimationFinish() {
                 //Do something when finish animation
+                ReactContext reactContext = (ReactContext) getContext();
+                sendEvent(reactContext, "onEnd", null);
             }
         };
 
@@ -183,8 +204,17 @@ public class RCTImageSequenceView extends ImageView {
             animation.addFrame(drawable, 1000 / framesPerSecond);
         }
         this.setImageDrawable(animation);
+        animation.setOneShot(true);
 
-        animation.setOneShot(false);
-        animation.start();
+        ReactContext reactContext = (ReactContext) getContext();
+        sendEvent(reactContext, "onLoad", null);
+    }
+
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable WritableMap params) {
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 }

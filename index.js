@@ -1,21 +1,54 @@
 import React, { Component } from 'react';
 import ReactNative, {
-  View,
   requireNativeComponent,
   ViewPropTypes,
   NativeModules,
-  Platform
 } from 'react-native';
+import { DeviceEventEmitter } from 'react-native';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 class ImageSequence extends Component {
+  componentWillMount() {
+    DeviceEventEmitter.addListener('onLoad', event => {
+      if (this.props.onLoad) {
+        this.props.onLoad();
+      }
+    });
+
+    DeviceEventEmitter.addListener('onEnd', event => {
+      if (this.props.onEnd) {
+        this.props.onEnd();
+      }
+    });
+  }
+
   reset() {
     const { UIManager } = NativeModules;
     const { Commands } = NativeModules.UIManager.RCTImageSequence;
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this),
       Commands.reset,
-      []
+      [],
+    );
+  }
+
+  play() {
+    const { UIManager } = NativeModules;
+    const { Commands } = NativeModules.UIManager.RCTImageSequence;
+    UIManager.dispatchViewManagerCommand(
+      ReactNative.findNodeHandle(this),
+      Commands.play,
+      [],
+    );
+  }
+
+  stop() {
+    const { UIManager } = NativeModules;
+    const { Commands } = NativeModules.UIManager.RCTImageSequence;
+    UIManager.dispatchViewManagerCommand(
+      ReactNative.findNodeHandle(this),
+      Commands.stop,
+      [],
     );
   }
 
@@ -26,7 +59,7 @@ class ImageSequence extends Component {
     if (this.props.startFrameIndex !== 0) {
       normalized = [
         ...normalized.slice(this.props.startFrameIndex),
-        ...normalized.slice(0, this.props.startFrameIndex)
+        ...normalized.slice(0, this.props.startFrameIndex),
       ];
     }
 
@@ -36,7 +69,7 @@ class ImageSequence extends Component {
 
 ImageSequence.defaultProps = {
   startFrameIndex: 0,
-  framesPerSecond: 24
+  framesPerSecond: 24,
 };
 
 ImageSequence.propTypes = {
@@ -45,8 +78,8 @@ ImageSequence.propTypes = {
   framesPerSecond: React.PropTypes.number,
   size: React.PropTypes.shape({
     width: React.PropTypes.number,
-    height: React.PropTypes.number
-  })
+    height: React.PropTypes.number,
+  }),
 };
 
 const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
@@ -54,15 +87,15 @@ const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
     ...ViewPropTypes,
     images: React.PropTypes.arrayOf(
       React.PropTypes.shape({
-        uri: React.PropTypes.string.isRequired
-      })
+        uri: React.PropTypes.string.isRequired,
+      }),
     ).isRequired,
     framesPerSecond: React.PropTypes.number,
     size: React.PropTypes.shape({
       width: React.PropTypes.number,
-      height: React.PropTypes.number
-    })
-  }
+      height: React.PropTypes.number,
+    }),
+  },
 });
 
 export default ImageSequence;

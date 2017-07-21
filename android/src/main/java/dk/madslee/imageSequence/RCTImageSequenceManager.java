@@ -1,7 +1,6 @@
 package dk.madslee.imageSequence;
 
 import com.facebook.infer.annotation.Assertions;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
@@ -18,6 +17,8 @@ import javax.annotation.Nullable;
 public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceView> {
 
     public static final int COMMAND_RESET = 1;
+    public static final int COMMAND_PLAY = 2;
+    public static final int COMMAND_STOP = 3;
 
     @Override
     public String getName() {
@@ -33,7 +34,11 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
     public Map<String,Integer> getCommandsMap() {
         return MapBuilder.of(
                 "reset",
-                COMMAND_RESET);
+                COMMAND_RESET,
+                "play",
+                COMMAND_PLAY,
+                "stop",
+                COMMAND_STOP);
     }
 
     @Override
@@ -46,6 +51,16 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
         switch (commandType) {
             case COMMAND_RESET: {
                 view.reset();
+                return;
+            }
+
+            case COMMAND_PLAY: {
+                view.play();
+                return;
+            }
+
+            case COMMAND_STOP: {
+                view.stop();
                 return;
             }
 
