@@ -46,6 +46,24 @@
     });
 }
 
+- (void)play {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self startAnimating];
+        [self performSelector:@selector(didFinishAnimating) withObject:nil afterDelay: self.animationDuration];
+    });
+}
+
+- (void)stop {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self stopAnimating];
+        self.image = self.animationImages[self.animationImages.count - 1]; // set last frame
+    });
+}
+
+- (void)didFinishAnimating {
+    if (self.self.onEnd) self.self.onEnd(@{});
+}
+
 - (void)onImageLoadTaskAtIndex:(NSUInteger)index image:(UIImage *)image {
     if (index == 0) {
         self.image = image;
@@ -72,7 +90,8 @@
     self.image = nil;
     self.animationDuration = images.count * (1.0f / _framesPerSecond);
     self.animationImages = images;
-    [self startAnimating];
+    self.animationRepeatCount = 1;
+    if (self.onLoad) self.onLoad(@{});
 }
 
 - (void)setFramesPerSecond:(NSUInteger)framesPerSecond {

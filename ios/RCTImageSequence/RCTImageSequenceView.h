@@ -4,9 +4,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <React/RCTView.h>
 
 @interface RCTImageSequenceView : UIImageView
 
+@property (nonatomic, copy) RCTDirectEventBlock onLoad;
+@property (nonatomic, copy) RCTDirectEventBlock onEnd;
+
 - (void)reset;
+- (void)play;
+- (void)stop;
 
 @end
