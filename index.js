@@ -80,8 +80,8 @@ ImageSequence.propTypes = {
     width: React.PropTypes.number,
     height: React.PropTypes.number
   }),
-  onLoad: PropTypes.func,
-  onEnd: PropTypes.func
+  onLoad: React.PropTypes.func,
+  onEnd: React.PropTypes.func
 };
 
 const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
@@ -97,8 +97,8 @@ const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
       width: React.PropTypes.number,
       height: React.PropTypes.number
     }),
-    onLoad: PropTypes.func,
-    onEnd: PropTypes.func
+    onLoad: React.PropTypes.func,
+    onEnd: React.PropTypes.func
   }
 });
 
