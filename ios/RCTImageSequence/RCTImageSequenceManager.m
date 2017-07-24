@@ -20,18 +20,6 @@ RCT_EXPORT_VIEW_PROPERTY(framesPerSecond, NSUInteger);
 RCT_EXPORT_VIEW_PROPERTY(onLoad, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onEnd, RCTDirectEventBlock);
 
-RCT_EXPORT_METHOD(reset: (nonnull NSNumber *)reactTag) {
-    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-        UIView *view = viewRegistry[reactTag];
-        if (![view isKindOfClass:[RCTImageSequenceView class]]) {
-            RCTLog(@"expecting UIView, got: %@", view);
-        } else {
-            RCTImageSequenceView *imageSequenceView = (RCTImageSequenceView *)view;
-            [imageSequenceView reset];
-        }
-    }];
-}
-
 RCT_EXPORT_METHOD(play: (nonnull NSNumber *)reactTag) {
     [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
         UIView *view = viewRegistry[reactTag];

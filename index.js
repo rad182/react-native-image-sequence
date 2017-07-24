@@ -21,17 +21,7 @@ class ImageSequence extends Component {
       }
     });
   }
-
-  reset() {
-    const { UIManager } = NativeModules;
-    const { Commands } = NativeModules.UIManager.RCTImageSequence;
-    UIManager.dispatchViewManagerCommand(
-      ReactNative.findNodeHandle(this),
-      Commands.reset,
-      []
-    );
-  }
-
+  
   play() {
     const { UIManager } = NativeModules;
     const { Commands } = NativeModules.UIManager.RCTImageSequence;

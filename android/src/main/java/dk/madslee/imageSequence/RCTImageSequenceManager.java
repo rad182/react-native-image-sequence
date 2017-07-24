@@ -16,9 +16,8 @@ import javax.annotation.Nullable;
 
 public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceView> {
 
-    public static final int COMMAND_RESET = 1;
-    public static final int COMMAND_PLAY = 2;
-    public static final int COMMAND_STOP = 3;
+    public static final int COMMAND_PLAY = 1;
+    public static final int COMMAND_STOP = 2;
 
     @Override
     public String getName() {
@@ -33,8 +32,6 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
     @Override
     public Map<String,Integer> getCommandsMap() {
         return MapBuilder.of(
-                "reset",
-                COMMAND_RESET,
                 "play",
                 COMMAND_PLAY,
                 "stop",
@@ -49,11 +46,6 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
         Assertions.assertNotNull(view);
         Assertions.assertNotNull(args);
         switch (commandType) {
-            case COMMAND_RESET: {
-                view.reset();
-                return;
-            }
-
             case COMMAND_PLAY: {
                 view.play();
                 return;

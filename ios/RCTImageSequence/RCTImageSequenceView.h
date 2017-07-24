@@ -11,7 +11,6 @@
 @property (nonatomic, copy) RCTDirectEventBlock onLoad;
 @property (nonatomic, copy) RCTDirectEventBlock onEnd;
 
-- (void)reset;
 - (void)play;
 - (void)stop;
 

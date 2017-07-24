@@ -9,6 +9,7 @@
     NSUInteger _framesPerSecond;
     NSMutableDictionary *_activeTasks;
     NSMutableDictionary *_imagesLoaded;
+    NSTimer *_timer;
 }
 
 - (void)setImages:(NSArray *)images {
@@ -39,25 +40,27 @@
     }
 }
 
-- (void)reset {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self stopAnimating];
-        [self startAnimating];
-        [self performSelector:@selector(didFinishAnimating) withObject:nil afterDelay: self.animationDuration];
-    });
-}
-
 - (void)play {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self stopAnimating];
+        self.image = self.animationImages[0]; // set first frame
+        if (_timer) {
+            [_timer invalidate];
+            _timer = nil;
+        }
         [self startAnimating];
-        [self performSelector:@selector(didFinishAnimating) withObject:nil afterDelay: self.animationDuration];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:self.animationDuration target:self selector:@selector(didFinishAnimating) userInfo:nil repeats:NO];
     });
 }
 
 - (void)stop {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stopAnimating];
-        self.image = self.animationImages[self.animationImages.count - 1]; // set last frame
+        self.image = self.animationImages[0]; // set first frame
+        if (_timer) {
+            [_timer invalidate];
+            _timer = nil;
+        }
     });
 }
 
