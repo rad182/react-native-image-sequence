@@ -65,7 +65,7 @@
 }
 
 - (void)didFinishAnimating {
-    if (self.self.onEnd) self.self.onEnd(@{});
+    if (self.onEnd) self.onEnd(@{});
 }
 
 - (void)onImageLoadTaskAtIndex:(NSUInteger)index image:(UIImage *)image {
