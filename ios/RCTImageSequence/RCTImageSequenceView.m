@@ -43,6 +43,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stopAnimating];
         [self startAnimating];
+        [self performSelector:@selector(didFinishAnimating) withObject:nil afterDelay: self.animationDuration];
     });
 }
 
