@@ -204,6 +204,8 @@ public class RCTImageSequenceView extends ImageView {
             animation.addFrame(drawable, 1000 / framesPerSecond);
         }
         this.setImageDrawable(animation);
+        animation.stop();
+        animation.selectDrawable(0);
         animation.setOneShot(true);
 
         ReactContext reactContext = (ReactContext) getContext();
