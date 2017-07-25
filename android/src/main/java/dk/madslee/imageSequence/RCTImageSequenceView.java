@@ -121,7 +121,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     public void play() {
-        final CustomAnimationDrawable animation = (CustomAnimationDrawable)this.getDrawable();
+        final CustomAnimationDrawable animation = (this.getDrawable() instanceof CustomAnimationDrawable ? (CustomAnimationDrawable)this.getDrawable() : null);
         if (animation != null) {
             animation.stop();
             animation.selectDrawable(0);
@@ -130,7 +130,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     public void stop() {
-        final CustomAnimationDrawable animation = (CustomAnimationDrawable)this.getDrawable();
+        final CustomAnimationDrawable animation = (this.getDrawable() instanceof CustomAnimationDrawable ? (CustomAnimationDrawable)this.getDrawable() : null);
         if (animation != null) {
             animation.stop();
             animation.selectDrawable(0);
