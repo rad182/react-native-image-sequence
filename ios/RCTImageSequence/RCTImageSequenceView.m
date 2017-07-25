@@ -43,7 +43,7 @@
 - (void)play {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stopAnimating];
-        self.image = self.animationImages[0]; // set first frame
+        self.image = [self.animationImages lastObject]; // set last frame
         if (_timer) {
             [_timer invalidate];
             _timer = nil;
@@ -56,7 +56,7 @@
 - (void)stop {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stopAnimating];
-        self.image = self.animationImages[0]; // set first frame
+        self.image = [self.animationImages firstObject]; // set first frame
         if (_timer) {
             [_timer invalidate];
             _timer = nil;
