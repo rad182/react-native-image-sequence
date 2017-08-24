@@ -17,7 +17,7 @@ public class RCTImageSequencePackage implements ReactPackage {
         return Collections.emptyList();
     }
 
-    @Override
+    // No @Override to support applications using React Native 0.47.0 or later
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
