@@ -28,6 +28,7 @@ public class RCTImageSequenceView extends ImageView {
     private RCTResourceDrawableIdHelper resourceDrawableIdHelper;
     private Integer drawableWidth = 0;
     private Integer drawableHeight = 0;
+    private Boolean isAnimationStopped = false;
 
     public RCTImageSequenceView(Context context) {
         super(context);
@@ -121,6 +122,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     public void play() {
+        isAnimationStopped = false;
         final CustomAnimationDrawable animation = (this.getDrawable() instanceof CustomAnimationDrawable ? (CustomAnimationDrawable)this.getDrawable() : null);
         if (animation != null) {
             animation.stop();
@@ -130,6 +132,7 @@ public class RCTImageSequenceView extends ImageView {
     }
 
     public void stop() {
+        isAnimationStopped = true;
         final CustomAnimationDrawable animation = (this.getDrawable() instanceof CustomAnimationDrawable ? (CustomAnimationDrawable)this.getDrawable() : null);
         if (animation != null) {
             animation.stop();
@@ -187,9 +190,12 @@ public class RCTImageSequenceView extends ImageView {
         final CustomAnimationDrawable animation = new CustomAnimationDrawable() {
             @Override
             void onAnimationFinish() {
-                //Do something when finish animation
-                ReactContext reactContext = (ReactContext) getContext();
-                sendEvent(reactContext, "onEnd", null);
+                // if animation is stopped don't send onEnd notification
+                if (!isAnimationStopped) {
+                    //Do something when finish animation
+                    ReactContext reactContext = (ReactContext) getContext();
+                    sendEvent(reactContext, "onEnd", null);
+                }
             }
         };
 
