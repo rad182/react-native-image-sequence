@@ -15,6 +15,7 @@ public abstract class CustomAnimationDrawable extends AnimationDrawable {
 
     private int current;
     private int totalTime;
+    private Boolean stopped = false;
 
     public CustomAnimationDrawable() {
         this.current = 0;
@@ -30,12 +31,19 @@ public abstract class CustomAnimationDrawable extends AnimationDrawable {
     @Override
     public void start() {
         super.start();
+        stopped = false;
         new Handler().postDelayed(new Runnable() {
 
             public void run() {
                 onAnimationFinish();
             }
         }, totalTime);
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        stopped = true;
     }
 
     @Override
@@ -46,7 +54,7 @@ public abstract class CustomAnimationDrawable extends AnimationDrawable {
 
     @Override
     public void draw(Canvas canvas) {
-        if (current < this.getNumberOfFrames()) {
+        if (current < this.getNumberOfFrames() && !stopped) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) this.getFrame(current);
             Bitmap bmp = bitmapDrawable.getBitmap();
             //Painting Bitmap in canvas
