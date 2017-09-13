@@ -9,19 +9,28 @@ import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 
 class ImageSequence extends Component {
   componentWillMount() {
-    DeviceEventEmitter.addListener('onLoad', event => {
-      if (this.props.onLoad) {
-        this.props.onLoad();
-      }
-    });
+    DeviceEventEmitter.addListener('onLoad', this.onLoad);
 
-    DeviceEventEmitter.addListener('onEnd', event => {
-      if (this.props.onEnd) {
-        this.props.onEnd();
-      }
-    });
+    DeviceEventEmitter.addListener('onEnd', this.onEnd);
   }
-  
+
+  onLoad = event => {
+    if (this.props.onLoad) {
+      this.props.onLoad();
+    }
+  };
+
+  onEnd = event => {
+    if (this.props.onEnd) {
+      this.props.onEnd();
+    }
+  };
+
+  componentWillUnmount() {
+    DeviceEventEmitter.removeListener('onLoad', this.onLoad);
+    DeviceEventEmitter.removeListener('onEnd', this.onEnd);
+  }
+
   play() {
     const { UIManager } = NativeModules;
     const { Commands } = NativeModules.UIManager.RCTImageSequence;
