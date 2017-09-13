@@ -28,7 +28,7 @@ public class RCTImageSequenceView extends ImageView {
     private RCTResourceDrawableIdHelper resourceDrawableIdHelper;
     private Integer drawableWidth = 0;
     private Integer drawableHeight = 0;
-    private Boolean isAnimationStopped = false;
+    private Boolean isAnimationStopped = true;
 
     public RCTImageSequenceView(Context context) {
         super(context);
