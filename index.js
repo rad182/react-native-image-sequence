@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import ReactNative, {
   requireNativeComponent,
   ViewPropTypes,
-  NativeModules
+  NativeModules,
+  DeviceEventEmitter
 } from 'react-native';
-import { DeviceEventEmitter } from 'react-native';
+import { string, number, array, shape, arrayOf } from 'prop-types';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 class ImageSequence extends Component {
@@ -72,32 +73,32 @@ ImageSequence.defaultProps = {
 };
 
 ImageSequence.propTypes = {
-  startFrameIndex: React.PropTypes.number,
-  images: React.PropTypes.array.isRequired,
-  framesPerSecond: React.PropTypes.number,
-  size: React.PropTypes.shape({
-    width: React.PropTypes.number,
-    height: React.PropTypes.number
+  startFrameIndex: PropTypes.number,
+  images: PropTypes.array.isRequired,
+  framesPerSecond: PropTypes.number,
+  size: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number
   }),
-  onLoad: React.PropTypes.func,
-  onEnd: React.PropTypes.func
+  onLoad: PropTypes.func,
+  onEnd: PropTypes.func
 };
 
 const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
   propTypes: {
     ...ViewPropTypes,
-    images: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        uri: React.PropTypes.string.isRequired
+    images: PropTypes.arrayOf(
+      PropTypes.shape({
+        uri: PropTypes.string.isRequired
       })
     ).isRequired,
-    framesPerSecond: React.PropTypes.number,
-    size: React.PropTypes.shape({
-      width: React.PropTypes.number,
-      height: React.PropTypes.number
+    framesPerSecond: PropTypes.number,
+    size: PropTypes.shape({
+      width: PropTypes.number,
+      height: PropTypes.number
     }),
-    onLoad: React.PropTypes.func,
-    onEnd: React.PropTypes.func
+    onLoad: PropTypes.func,
+    onEnd: PropTypes.func
   }
 });
 
