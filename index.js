@@ -5,7 +5,7 @@ import ReactNative, {
   NativeModules,
   DeviceEventEmitter
 } from 'react-native';
-import { string, number, array, shape, arrayOf } from 'prop-types';
+import { string, number, array, shape, arrayOf, func } from 'prop-types';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 class ImageSequence extends Component {
@@ -73,32 +73,32 @@ ImageSequence.defaultProps = {
 };
 
 ImageSequence.propTypes = {
-  startFrameIndex: PropTypes.number,
-  images: PropTypes.array.isRequired,
-  framesPerSecond: PropTypes.number,
-  size: PropTypes.shape({
-    width: PropTypes.number,
-    height: PropTypes.number
+  startFrameIndex: number,
+  images: array.isRequired,
+  framesPerSecond: number,
+  size: shape({
+    width: number,
+    height: number
   }),
-  onLoad: PropTypes.func,
-  onEnd: PropTypes.func
+  onLoad: func,
+  onEnd: func
 };
 
 const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
   propTypes: {
     ...ViewPropTypes,
-    images: PropTypes.arrayOf(
-      PropTypes.shape({
-        uri: PropTypes.string.isRequired
+    images: arrayOf(
+      shape({
+        uri: string.isRequired
       })
     ).isRequired,
-    framesPerSecond: PropTypes.number,
-    size: PropTypes.shape({
-      width: PropTypes.number,
-      height: PropTypes.number
+    framesPerSecond: number,
+    size: shape({
+      width: number,
+      height: number
     }),
-    onLoad: PropTypes.func,
-    onEnd: PropTypes.func
+    onLoad: func,
+    onEnd: func
   }
 });
 
